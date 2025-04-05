@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess My Number</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background: #151B54;
+            overflow: hidden;
+        }
+
+        .stars {
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            animation: moveStars 5s linear infinite;
+        }
+
+        @keyframes moveStars {
+            0% {
+                transform: translateY(0px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="d-flex justify-content-center align-items-center vh-100">
+    <div class="container ">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mt-3" style="color: #151B54;">Guess My Number</h5>
+                        <p class="card-text mt-3" style="color: #151B54;">Enter a random number between 1 to 100:</p>
+                        <form>
+                            <input type="number" id="userInput" class="form-control mt-3" style="border:double black;" required>
+                            <p id="information"></p>
+                            <div class="mt-3 d-flex justify-content-center gap-3">
+                                <button class="btn btn-primary" type="button"
+                                    onclick="validateInputs()">MyGuess</button>
+                                <button class="btn btn-danger" type="button"
+                                    onclick="resetGame()">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        for (let i = 0; i < 100; i++) {
+            let star = document.createElement("div");
+            star.className = "stars";
+            star.style.left = Math.random() * 100 + "vw";
+            star.style.top = Math.random() * 100 + "vh";
+            star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(star);
+        }
+        var guessNumber = document.getElementById("userInput");
+        var info = document.getElementById("information");
+        var machineInput = Math.floor(Math.random() * 100) + 1;
+        var count = 1;
+
+        //console.log("Machine's number:", machineInput);
+
+        function validateInputs() {
+            var enteredValue = Number(guessNumber.value);
+
+            if (count >= 10) {
+                info.textContent = "You Lost Better Luck Next Time! And The Number was " + machineInput;
+                return;
+            }
+
+            if (enteredValue === machineInput) {
+                info.textContent = "You Won!!!,if you want to play agin click reset";
+                guessNumber.disabled = true;
+                return;
+            }
+            else if (enteredValue > machineInput) {
+                info.textContent = "My Number is lower than your guess."+"you have "+(10-count)+" guesses left";
+                count++;
+            } else if (enteredValue < machineInput) {
+                info.textContent = "My Number is higher than your guess."+"you have "+(10-count)+" guesses left";
+                count++;
+            }
+        }
+        function resetGame(){
+            guessNumber.disabled = false;
+            guessNumber.value = "";
+            info.textContent = "";
+            machineInput = Math.floor(Math.random()* 100)+1;
+            count = 1;
+           // console.log("Machine's number:", machineInput);
+        }
+    </script>
+</body>
+
+</html>
